@@ -1,0 +1,40 @@
+metadata:
+  name: sink
+spec:
+  description: 'kafka listener in nodejs'
+  handler: handler
+  runtime: nodejs
+  resources: {}
+  image: 'nuclio/processor-hinodekafka:latest'
+  minReplicas: 1
+  maxReplicas: 1
+  triggers:
+    local_docker_kafka:
+      kind: kafka-cluster
+      attributes:
+        brokers:
+        - 'kafka-hub-0.kafka-hub-headless.nuclio.svc.cluster.local:9092'
+        consumerGroup: nuclioevents_cg
+        initialOffset: latest
+        sasl:
+          enable: false
+          password: ""
+          user: ""
+        topics:
+          - nuclioevents
+      workerAllocatorName: ""
+  build:
+    registry: "127.0.0.1:31500"
+    image: ""
+    noCache: false
+    offline: false
+    dependencies: []
+    runtimeAttributes:
+      repositories: []
+    functionSourceCode: ZXhwb3J0cy5oYW5kbGVyID0gZnVuY3Rpb24oY29udGV4dCwgZXZlbnQpIHsKICAgIHZhciByZXF1ZXN0ID0gSlNPTi5wYXJzZShldmVudC5ib2R5KTsKICAgIHZhciBzbGVlcCA9IHByb2Nlc3MuZW52WydTTEVFUCddIHx8IDEwMDA7CgogICAgY29udGV4dC5sb2dnZXIuaW5mbygnc2luay5oYW5kbGVyIGJlZ2luJykKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24oKSB7CiAgICAgICAgY29udGV4dC5sb2dnZXIuaW5mb1dpdGgoJ3NpbmsuaGFuZGxlcicsIHsgcmVxdWVzdCB9KQogICAgICAgIGNvbnRleHQubG9nZ2VyLmluZm8oJ3NpbmsuaGFuZGxlciBlbmQnKQogICAgICAgIGNvbnRleHQuY2FsbGJhY2soZXZlbnQuYm9keSk7CiAgICB9LCBzbGVlcCkKfTsK
+    commands:
+      - 'npm install --global moment'
+    onbuildImage: 'quay.io/nuclio/handler-builder-nodejs-onbuild:1.7.11-amd64'
+    codeEntryType: sourceCode
+  platform: {}
+  readinessTimeoutSeconds: 60
