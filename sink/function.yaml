@@ -5,7 +5,7 @@ spec:
   handler: handler
   runtime: nodejs
   resources: {}
-  image: 'nuclio/processor-hinodekafka:latest'
+  image: 'nuclio/processor-sink:latest'
   minReplicas: 1
   maxReplicas: 1
   triggers:
@@ -21,7 +21,7 @@ spec:
           password: ""
           user: ""
         topics:
-          - nuclioevents
+          - mutated
       workerAllocatorName: ""
   build:
     registry: "127.0.0.1:31500"

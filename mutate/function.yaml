@@ -22,7 +22,7 @@ spec:
           password: ""
           user: ""
         topics:
-          - ingest
+          - ingested
   build:
     registry: "127.0.0.1:31500"
     image: ""
@@ -43,5 +43,5 @@ spec:
   - name: KAFKA
     value: "kafka-hub-0.kafka-hub-headless.nuclio.svc.cluster.local:9092"
   - name: KAFKA_TOPIC_OUT
-    value: "nuclioevents"
+    value: "mutated"
   readinessTimeoutSeconds: 60

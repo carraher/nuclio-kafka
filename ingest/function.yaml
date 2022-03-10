@@ -1,11 +1,11 @@
 metadata:
-  name: rest-ingest
+  name: ingest
 spec:
   description: "Showcases unstructured logging and a structured response."
   handler: "main:handler"
   runtime: "python:3.6"
   resources: {}
-  image: "nuclio/processor-rest-ingest:latest"
+  image: "nuclio/processor-ingest:latest"
   minReplicas: 1
   maxReplicas: 1
   build:
@@ -25,5 +25,5 @@ spec:
   - name: KAFKA
     value: "kafka-hub-0.kafka-hub-headless.nuclio.svc.cluster.local:9092"
   - name: KAFKA_TOPIC_OUT
-    value: "ingest"
+    value: "ingested"
   readinessTimeoutSeconds: 60

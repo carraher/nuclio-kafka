@@ -49,8 +49,10 @@ helm install $KAFKA_NAME bitnami/kafka --namespace nuclio \
   --set zookeeper.persistence.enabled=false
 
 KAFKA_POD_NAME="$KAFKA_NAME-0"
-knuc exec -it $KAFKA_POD_NAME -- kafka-topics.sh --bootstrap-server kafka-hub.nuclio.svc.cluster.local:9092 --create --replication-factor 1 --partitions 1 --topic nuclioevents
-knuc exec -it $KAFKA_POD_NAME -- kafka-topics.sh --bootstrap-server kafka-hub.nuclio.svc.cluster.local:9092 --create --replication-factor 1 --partitions 1 --topic ingest
+KAFKA_TOPIC_0="ingested"
+KAFKA_TOPIC_1="mutated"
+knuc exec -it $KAFKA_POD_NAME -- kafka-topics.sh --bootstrap-server kafka-hub.nuclio.svc.cluster.local:9092 --create --replication-factor 1 --partitions 1 --topic $KAFKA_TOPIC_0
+knuc exec -it $KAFKA_POD_NAME -- kafka-topics.sh --bootstrap-server kafka-hub.nuclio.svc.cluster.local:9092 --create --replication-factor 1 --partitions 1 --topic $KAFKA_TOPIC_1
 knuc exec -it $KAFKA_POD_NAME -- kafka-topics.sh --bootstrap-server kafka-hub.nuclio.svc.cluster.local:9092 --list
 ```
 
@@ -89,11 +91,11 @@ nuctl -n nuclio get functions
 
 Tail all 3 containers' k8s logs and send some test json to the first service
 ```sh
-knuc logs -f $(knuc get pod -l nuclio.io/function-name=rest-ingest -o jsonpath='{.items[0].metadata.name}') &
+knuc logs -f $(knuc get pod -l nuclio.io/function-name=ingest -o jsonpath='{.items[0].metadata.name}') &
 knuc logs -f $(knuc get pod -l nuclio.io/function-name=mutate -o jsonpath='{.items[0].metadata.name}') &
 knuc logs -f $(knuc get pod -l nuclio.io/function-name=sink -o jsonpath='{.items[0].metadata.name}') &
 
-INGEST_FUNC_PORT=$(nuctl -n nuclio get functions | grep rest-ingest | awk '{print $9}')
+INGEST_FUNC_PORT=$(nuctl -n nuclio get functions | grep ingest | awk '{print $9}')
 curl -X POST -H "Content-Type: application/json" -d '{ "messagedata": "original"}' "http://127.0.0.1:$INGEST_FUNC_PORT/"
 ```
 
