@@ -7,7 +7,7 @@ Create a simple serverless flow using Kafka as messaging hub between Nuclio (Igu
 
 Flow between the Nuclio functions (in boxes).
 
-[!](./function-flow.png)
+![function flow](function-flow.png)
 
 # deploy
 
