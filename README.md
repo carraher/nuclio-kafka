@@ -115,9 +115,9 @@ nuctl --help && nuctl version
 
 Deploy Nuclio Kafka functions
 ```sh
-nuctl deploy -n nuclio --registry $REGISTRY --path ./ingest/function.yaml
-nuctl deploy -n nuclio --registry $REGISTRY --path ./mutate/function.yaml
-nuctl deploy -n nuclio --registry $REGISTRY --path ./sink/function.yaml
+nuctl deploy -n nuclio --registry $REGISTRY --path ./ingest
+nuctl deploy -n nuclio --registry $REGISTRY --path ./mutate
+nuctl deploy -n nuclio --registry $REGISTRY --path ./sink
 
 nuctl -n nuclio get functions
 ```
