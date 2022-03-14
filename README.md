@@ -22,7 +22,7 @@ minikube start --kubernetes-version=v1.21.5 --driver=none
 
 Add some convenient aliases.
 ```sh
-# easier if going to us tmux
+# easier if going to use tmux when tailing logs
 ALIASES='alias ka="kubectl get pods --all-namespaces" &&
 alias kn="kubectl --namespace" &&
 alias ks="kn kube-system" &&
@@ -32,7 +32,7 @@ alias watch="watch "'
 echo $ALIASES >>~/.bashrc
 source ~/.bashrc
 
-# or only for the current session
+# or only for the current session and not touch ~/.bashrc
 eval $ALIASES
 ```
 
@@ -113,11 +113,11 @@ curl -L https://github.com/nuclio/nuclio/releases/download/$NUCLIO_VERSION/nuctl
 nuctl --help && nuctl version
 ```
 
-Import Nuclio Kafka functions
+Deploy Nuclio Kafka functions
 ```sh
-nuctl import functions -n nuclio ./ingest/function.yaml
-nuctl import functions -n nuclio ./mutate/function.yaml
-nuctl import functions -n nuclio ./sink/function.yaml
+nuctl deploy -n nuclio --registry $REGISTRY --path ./ingest/function.yaml
+nuctl deploy -n nuclio --registry $REGISTRY --path ./mutate/function.yaml
+nuctl deploy -n nuclio --registry $REGISTRY --path ./sink/function.yaml
 
 nuctl -n nuclio get functions
 ```
